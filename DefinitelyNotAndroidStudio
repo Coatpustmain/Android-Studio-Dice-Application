@@ -1,0 +1,210 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Data.SqlClient;
+
+namespace InsertDelete
+{
+    public partial class Form1 : Form
+    {
+        SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Laurentiu\Documents\testing.mdf;Integrated Security=True;Connect Timeout=30"); 
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "insert into table1 values('" + textBox1.Text + "','" + textBox2.Text + "','" + textBox3.Text + "','" + textBox4.Text + "','" + textBox5.Text + "')";
+            cmd.ExecuteNonQuery();
+            con.Close();
+            textBox1.Text = "";
+            textBox2.Text = "";
+            textBox3.Text = "";
+            textBox4.Text = "";
+            textBox5.Text = "";
+            disp_data();
+            MessageBox.Show("Datele au fost introduse!");
+
+        }
+
+        public void disp_data()
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select * from Table1";
+            cmd.ExecuteNonQuery();
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            dataGridView1.DataSource = dt;
+            con.Close();
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            disp_data();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "delete from table1 where Nume='" + textBox6.Text + "'";
+            cmd.ExecuteNonQuery();
+            con.Close();
+            textBox6.Text = "";
+            disp_data();
+            MessageBox.Show("Stergere cu Succes");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "update table1 set Nume='"+textBox11.Text+"' where Nume='" + textBox12.Text + "'";
+            cmd.ExecuteNonQuery();
+            con.Close();
+            disp_data();
+            textBox11.Text = "";
+            textBox12.Text = "";
+            MessageBox.Show("Ai facut un UPDATE");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select * from Table1 where Nume='"+textBox7.Text+"'";
+            cmd.ExecuteNonQuery();
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            dataGridView1.DataSource = dt;
+            textBox7.Text = "";
+
+            con.Close();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            disp_data();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select * from Table1 where Oras='" + textBox8.Text + "'";
+            cmd.ExecuteNonQuery();
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            dataGridView1.DataSource = dt;
+            textBox8.Text = "";
+
+            con.Close();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select * from Table1 where Ocupatie='" + textBox9.Text + "'";
+            cmd.ExecuteNonQuery();
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            dataGridView1.DataSource = dt;
+            textBox9.Text = "";
+
+            con.Close();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select * from Table1 where Varsta<'" + textBox10.Text + "'";
+            cmd.ExecuteNonQuery();
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            dataGridView1.DataSource = dt;
+            textBox10.Text = "";
+
+            con.Close();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "update table1 set Oras='" + textBox13.Text + "' where Nume='" + textBox12.Text + "'";
+            cmd.ExecuteNonQuery();
+            con.Close();
+            disp_data();
+            textBox13.Text = "";
+            MessageBox.Show("Ai modificat Orasul!");
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "update table1 set Tara='" + textBox15.Text + "' where Nume='" + textBox12.Text + "'"; 
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "update table1 set Oras='" + " " + "' where Nume='" + textBox12.Text + "'";
+            cmd.ExecuteNonQuery();
+            con.Close();
+            disp_data();
+            textBox15.Text = "";
+            MessageBox.Show("Ai modificat Tara! Sa nu uiti sa introduci Orasul!");
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "update table1 set Varsta='" + textBox17.Text + "' where Nume='" + textBox12.Text + "'";
+            cmd.ExecuteNonQuery();
+            con.Close();
+            disp_data();
+            textBox17.Text = "";
+            MessageBox.Show("Ai modificat Varsta");
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "update table1 set Ocupatie='" + textBox19.Text + "' where Nume='" + textBox12.Text + "'";
+            cmd.ExecuteNonQuery();
+            con.Close();
+            disp_data();
+            textBox19.Text = "";
+            MessageBox.Show("Ai modificat Ocupatia!");
+        }
+    }
+}
